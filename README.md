@@ -26,5 +26,7 @@ input arguments:
 7. Input calibration gain file.
 
 ### An example
+```bash
 ./getGain prtJUNO_physics 3211 5 PENum.txt Calib_3211.root gain_3211.txt
+```
 
