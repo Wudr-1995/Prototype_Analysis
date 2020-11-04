@@ -19,7 +19,7 @@ make clean
 input arguments:
 
 1. "./getGain"
-2. Input data type (prtJUNO_externalTrigger or prtJUNO_physics).
+2. Input data type (prtJUNO_externalTrigger or prtJUNO_physics or perJUNO_calibration).
 3. Run Number.
 4. The number of files.
 5. Output txt file name (for test).
