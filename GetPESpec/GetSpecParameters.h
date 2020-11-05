@@ -11,7 +11,7 @@
 
 using namespace std;
 
-Double_t mygaus(Double_t* x, Double_t* par));
-bool GetGain(TH1D* &);
+Double_t mygaus(Double_t* x, Double_t* par);
+double GetGain(TH1D* &);
 
 #endif

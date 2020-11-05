@@ -1,4 +1,5 @@
 #include "Process.h"
+#include "GetSpecParameters.h"
 #include <iostream>
 #include<iomanip>
 #include <stdio.h>
