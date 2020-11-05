@@ -40,8 +40,10 @@ EXEFILES       	= main.$(SrcSuf)
 EXEFILE        	= getGain$(ExeSuf)
 PROCESSEVENTO   = Process.$(ObjSuf)
 PROCESSEVENTS   = Process.$(SrcSuf) 
+GETPARSEVENTO	= GetSpecParameters.$(ObjSuf)
+GETPARSEVENTS	= GetSpecParameters.$(SrcSuf)
 
-OBJS          = $(EXEFILO) $(PROCESSEVENTO)
+OBJS          = $(EXEFILO) $(PROCESSEVENTO) $(GETPARSEVENTO)
 PROGRRPC      = $(EXEFILE)
 
 #------------------------------------------------------------------------------
@@ -50,8 +52,8 @@ PROGRRPC      = $(EXEFILE)
 
 all:            $(PROGRRPC)
 
-$(EXEFILE):     $(EXEFILO) $(PROCESSEVENTO) 
-		$(LD) $(LDFLAGS) $(EXEFILO) $(PROCESSEVENTO)\
+$(EXEFILE):     $(EXEFILO) $(PROCESSEVENTO) $(GETPARSEVENTO)
+		$(LD) $(LDFLAGS) $(EXEFILO) $(PROCESSEVENTO) $(GETPARSEVENTO)\
 		$(GLIBS) -lMinuit $(OutPutOpt)$(EXEFILE)
 		@echo "$@ done"
 
@@ -66,7 +68,8 @@ distclean:      clean
 .SUFFIXES: .$(SrcSuf)
 
 ###
+$(GETPARSEVENTO): GetSpecParameters.h GetSpecParameters.cc
 $(PROCESSEVENTO): Process.h Process.cc
-$(EXEFILO): main.cc Process.h Process.cc
+$(EXEFILO): main.cc Process.h Process.cc GetSpecParameters.h GetSpecParameters.cc
 .$(SrcSuf).$(ObjSuf):
 	$(CXX) $(CXXFLAGS) -c $<
