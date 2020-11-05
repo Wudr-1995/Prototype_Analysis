@@ -6,7 +6,7 @@ Double_t mygaus(Double_t* x, Double_t* par) {
 	return f;
 }
 
-double CalibGain(TH1D* &InSpec) {
+double CalibGain(TH1D* InSpec) {
 	TH1D* QOut = new TH1D("ChargeSpecOut", "Charge Spectrum", 10000, -50, 150);
 	pos = 0;
 	int pedestal = InSpec->GetMaximumBin();
