@@ -11,7 +11,7 @@
 
 using namespace std;
 
-Double_t mygaus(Double_t* x, Double_t* par));
+Double_t mygaus(Double_t* x, Double_t* par);
 double CalibGain(TH1D* &);
 
 #endif
