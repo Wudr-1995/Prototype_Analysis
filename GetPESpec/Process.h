@@ -14,7 +14,7 @@ int GetIntegralMap();
 int FillCharge();
 int GetGainNeed();
 int GetCableMap();
-int GetFileName(int argc, char **argv, char *input_Filename, char *outputFileName, char *rootfile, char *Gainfile); //Both input file name and output file name
+int GetFileName(int argc, char **argv, char *input_Filename, char *outputFileName, char *rootfile, char *Gainfile, char* GainOut); //Both input file name and output file name
 int GetInputTree();
 int GetCaGain(char *file);
 

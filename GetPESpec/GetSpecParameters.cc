@@ -6,7 +6,7 @@ Double_t mygaus(Double_t* x, Double_t* par) {
 	return f;
 }
 
-bool GetGain(TH1D* &InSpec) {
+double CalibGain(TH1D* &InSpec) {
 	TH1D* QOut = new TH1D("ChargeSpecOut", "Charge Spectrum", 10000, -50, 150);
 	pos = 0;
 	int pedestal = InSpec->GetMaximumBin();
@@ -79,35 +79,18 @@ bool GetGain(TH1D* &InSpec) {
 	for (int i = pedestal; i < Spe_pos; i ++) {
 		tmp->SetBinContent(i - pedestal + 1, InSpec->GetBinContent(i));
 	}
-	double valley = tmp->GetBinContent(tmp->GetMinimumBin());
+	// double valley = tmp->GetBinContent(tmp->GetMinimumBin());
 	// double peakV = QOut->GetBinContent(QOut->GetMaximumBin());
-	double peakV = SpePars[0];
-	double peakEr = SpeParsEr[0];
+	// double peakV = SpePars[0];
+	// double peakEr = SpeParsEr[0];
 	Double_t valleyEr = tmp->GetBinError(tmp->GetMinimumBin());
-	QOut->SetLineColor(kRed);
-	InSpec->SetLineColor(kGreen);
 	double Gain = (SpePars[1] - pars[1]) * 0.01 / 1.6;
-	double GainEr = (SpeParsEr[1] + PedParsEr[1]) * 0.01 / 1.6;
-	double PV = peakV / valley;
-	double PVEr = peakEr / valley + valleyEr * PV / valley;
-	double Resolution = SpePars[2] / (SpePars[1] - pars[1]);
-	double ResEr = SpeParsEr[2] / (SpePars[1] - pars[1])\
-					+ SpeParsEr[1] * SpePars[2] / (SpePars[1] - pars[1]) / (SpeParsEr[1] - pars[1])\
-					+ PedParsEr[1] * SpePars[2] / (SpePars[1] - pars[1]) / (SpeParsEr[1] - pars[1]);	
-	cout << "Gain: " << (SpePars[1] - pars[1]) * 0.01 / 1.6 << endl;
-	cout << "P-V: " << peakV / valley << endl;
-	cout << "Resolution: " << SpePars[2] / (SpePars[1] - pars[1]) << endl;
-	outfile << name << "\t" << ratio << "\t"
-			<< HV << "\t" << GainEr << "\t"
-			<< PV << "\t" << PVEr << "\t"
-			<< Resolution << "\t" << ResEr << endl;
-	in.close();
-	outfile.close();
-	auto c = new TCanvas();
-	c->cd();
-	InSpec->Draw();
-	// QOut->Draw("same");
-	test->Draw("same");
-	QOut->Draw("same");
-	return true;
+	// double GainEr = (SpeParsEr[1] + PedParsEr[1]) * 0.01 / 1.6;
+	// double PV = peakV / valley;
+	// double PVEr = peakEr / valley + valleyEr * PV / valley;
+	// double Resolution = SpePars[2] / (SpePars[1] - pars[1]);
+	// double ResEr = SpeParsEr[2] / (SpePars[1] - pars[1])\
+	// 				+ SpeParsEr[1] * SpePars[2] / (SpePars[1] - pars[1]) / (SpeParsEr[1] - pars[1])\
+	// 				+ PedParsEr[1] * SpePars[2] / (SpePars[1] - pars[1]) / (SpeParsEr[1] - pars[1]);	
+	return Gain;
 }

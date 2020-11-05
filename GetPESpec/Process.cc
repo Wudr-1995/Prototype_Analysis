@@ -1,4 +1,5 @@
 #include "Process.h"
+#include "GetSpecParameters.h"
 #include <iostream>
 #include<iomanip>
 #include <stdio.h>
@@ -68,10 +69,11 @@ int ChId;
 int TotalProcess(int argc, char **argv)
 {
 	int num;
-	char Input[100], Output[100], RootFile[100], directory[100], temp[100], Gainfile[100];
+	char Input[100], Output[100], RootFile[100], directory[100], temp[100], Gainfile[100], GainOut[100];
 	char n[100];
 	ofstream out;
-	num = GetFileName(argc, argv, Input, Output, RootFile, Gainfile);
+	ofstream gainout;
+	num = GetFileName(argc, argv, Input, Output, RootFile, Gainfile, GainOut);
 	File_Out = new TFile(RootFile, "recreate");
 	if (!num)
 		return 0;
@@ -217,6 +219,8 @@ int TotalProcess(int argc, char **argv)
 		}
 	}
 	out.open(Output, std::ofstream::out);
+	gainout.open(GainOut);
+	GetGain();
 	File_Out->cd();
 	average_waveform[56]->Write();
 	average_waveform[40]->Write();
@@ -228,6 +232,9 @@ int TotalProcess(int argc, char **argv)
 	waveform->Write();
 	Inte->Write();
 	OutputTree->Write();
+	for (int i = 0; i < 112; i ++) {
+		gainout << Gain[i] << endl;
+	}
 	for (int i = 0; i < 5000; i ++)
 		out << PeSpectrum->GetBinContent(i + 1) << "\t";
 	out << "\n";
@@ -382,15 +389,16 @@ int GetGain()
 {
 	for (int i = 0; i < 112; i ++)
 	{
-		Gain[i] = charge_spectrum[i]->GetMaximumBin() * 0.15 / 1.6;
+		// Gain[i] = charge_spectrum[i]->GetMaximumBin() * 0.15 / 1.6;
+		Gain[i] = CalibGain(charge_spectrum[i]);
 	}
 	return 0;
 }
-int GetFileName(int argc, char **argv, char *input_Filename, char *output_FileName, char *rootfile, char *Gainfile)
+int GetFileName(int argc, char **argv, char *input_Filename, char *output_FileName, char *rootfile, char *Gainfile, char* GainOut)
 {
 	char temp[200];
 	int num;
-	if (argc == 7)
+	if (argc == 8)
 	{
 		strcpy(temp, argv[1]);
 		strcat(temp, ".0000");
@@ -402,6 +410,7 @@ int GetFileName(int argc, char **argv, char *input_Filename, char *output_FileNa
 		strcpy(output_FileName, argv[4]);
 		strcpy(rootfile, argv[5]);
 		strcpy(Gainfile, argv[6]);
+		strcpy(GainOut, argv[7]);
 	}
 	else
 	{
