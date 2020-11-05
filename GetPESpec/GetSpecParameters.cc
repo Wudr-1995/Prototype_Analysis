@@ -19,7 +19,7 @@ double CalibGain(TH1F* InSpec) {
 	}
 	int HalWidth = pedestal - start;
 	int end = pedestal + HalWidth * 0.9;
-	TF1* GausFunc = new TF1("gaus", "gaus", start * 25, end * 25);
+	TF1* GausFunc = new TF1("gaus", "gaus", start * 0.02, end * 0.02);
 	InSpec->Fit(GausFunc, "R");
 	Double_t pars[3];
 	GausFunc->GetParameters(pars);
@@ -46,7 +46,7 @@ double CalibGain(TH1F* InSpec) {
 		HalWidth = Spe_pos - start;
 		end = Spe_pos + HalWidth;
 		cout << start << "\t" << end << endl;
-		TF1* tmp = new TF1("tmp_gaus", "gaus", start * 25, end * 25);
+		TF1* tmp = new TF1("tmp_gaus", "gaus", start * 0.02, end * 0.02);
 		QOut->Fit(tmp, "R");
 		Double_t tmp_pars[3];
 		tmp->GetParameters(tmp_pars);
@@ -68,13 +68,13 @@ double CalibGain(TH1F* InSpec) {
 	}
 	HalWidth = end - Spe_pos;
 	start = Spe_pos - HalWidth * 0.5;
-	TF1* SpeFunc = new TF1("Spe_gaus", "gaus", start * 25, end * 25);
+	TF1* SpeFunc = new TF1("Spe_gaus", "gaus", start * 0.02, end * 0.02);
 	QOut->Fit(SpeFunc, "R");
 	Double_t SpePars[3];
 	SpeFunc->GetParameters(SpePars);
 	const Double_t* SpeParsEr = SpeFunc->GetParErrors();
 	Spe_pos = SpePars[1] / 25;
-	TH1D* tmp = new TH1D("tmp", "tmp", Spe_pos - pedestal, 0, (Spe_pos - pedestal) * 25);
+	TH1D* tmp = new TH1D("tmp", "tmp", Spe_pos - pedestal, 0, (Spe_pos - pedestal) * 0.02);
 	for (int i = pedestal; i < Spe_pos; i ++) {
 		tmp->SetBinContent(i - pedestal + 1, InSpec->GetBinContent(i));
 	}

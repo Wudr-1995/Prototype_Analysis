@@ -258,6 +258,7 @@ int TotalProcess(int argc, char **argv)
 	File_Out->Close();
 	cout << "Output to TXT" << endl;
 	out.close();
+	gainout.close();
 	return 0;
 }
 
