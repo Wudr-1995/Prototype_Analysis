@@ -25,9 +25,10 @@ input arguments:
 5. Output txt file name (for test).
 6. Output root file name.
 7. Input calibration gain file.
+8. Output calibration gain file.
 
 ### An example
 ```bash
-./getGain prtJUNO_physics 3211 5 PENum.txt Calib_3211.root gain_3211.txt
+./getGain prtJUNO_physics 3211 5 PENum.txt Calib_3211.root gain_3211.txt CalibGain.txt
 ```
 
