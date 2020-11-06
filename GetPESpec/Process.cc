@@ -51,6 +51,7 @@ int Peak_End[112];
 int Inte_Start[112];
 int Inte_End[112];
 double Gain[112];
+double GainEr[112];
 double charge[112];
 int Ch_count = 0;
 double PeN;
@@ -220,7 +221,7 @@ int TotalProcess(int argc, char **argv)
 	}
 	out.open(Output, std::ofstream::out);
 	gainout.open(GainOut);
-	GetGain();
+	// GetGain();
 	File_Out->cd();
 	average_waveform[56]->Write();
 	average_waveform[40]->Write();
@@ -233,7 +234,9 @@ int TotalProcess(int argc, char **argv)
 	Inte->Write();
 	OutputTree->Write();
 	for (int i = 0; i < 112; i ++) {
-		gainout << Gain[i] << endl;
+		double* tmp;
+		tmp = CalibGain(charge_spectrum[i]);
+		gainout << tmp[0] << "\t" << tmp[1] << "\t" << tmp[2] << "\t" << tmp[3] << endl;
 	}
 	for (int i = 0; i < 5000; i ++)
 		out << PeSpectrum->GetBinContent(i + 1) << "\t";
@@ -391,7 +394,10 @@ int GetGain()
 	for (int i = 0; i < 112; i ++)
 	{
 		// Gain[i] = charge_spectrum[i]->GetMaximumBin() * 0.15 / 1.6;
-		Gain[i] = CalibGain(charge_spectrum[i]);
+		double* tmp;
+		tmp = CalibGain(charge_spectrum[i]);
+		Gain[i] = tmp[0];
+		GainEr[i] = tmp[1];
 	}
 	return 0;
 }

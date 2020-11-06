@@ -6,7 +6,7 @@ Double_t mygaus(Double_t* x, Double_t* par) {
 	return f;
 }
 
-double CalibGain(TH1F* InSpec) {
+double* CalibGain(TH1F* InSpec) {
 	TH1D* QOut = new TH1D("ChargeSpecOut", "Charge Spectrum", 10000, -50, 150);
 	int pedestal = InSpec->GetMaximumBin();
 	int peak = InSpec->GetBinContent(pedestal);
@@ -34,9 +34,11 @@ double CalibGain(TH1F* InSpec) {
 		test->SetBinContent(i, mygaus(x, pars));
 		// cout << "Debug: " << i << "\t" << mygaus(x, pars) << endl;
 	}
-	int Spe_pos = QOut->GetMaximumBin();
-	int Spe_peak = QOut->GetBinContent(Spe_pos);
+	int Spe_pos;
+	int Spe_peak;
 	if (Spe_pos < pedestal + HalWidth) {
+		Spe_pos = QOut->GetMaximumBin();
+		Spe_peak = QOut->GetBinContent(Spe_pos);
 		for (int i = Spe_pos; i > 0; i --) {
 			if (QOut->GetBinContent(i) < Spe_peak * 0.3) {
 				start = i;
@@ -83,12 +85,14 @@ double CalibGain(TH1F* InSpec) {
 	// double peakEr = SpeParsEr[0];
 	Double_t valleyEr = tmp->GetBinError(tmp->GetMinimumBin());
 	double Gain = (SpePars[1] - pars[1]) / 0.16;
-	// double GainEr = (SpeParsEr[1] + PedParsEr[1]) * 0.01 / 1.6;
+	double GainEr = (SpeParsEr[1] + PedParsEr[1]) / 0.16;
 	// double PV = peakV / valley;
 	// double PVEr = peakEr / valley + valleyEr * PV / valley;
 	// double Resolution = SpePars[2] / (SpePars[1] - pars[1]);
 	// double ResEr = SpeParsEr[2] / (SpePars[1] - pars[1])\
 	// 				+ SpeParsEr[1] * SpePars[2] / (SpePars[1] - pars[1]) / (SpeParsEr[1] - pars[1])\
-	// 				+ PedParsEr[1] * SpePars[2] / (SpePars[1] - pars[1]) / (SpeParsEr[1] - pars[1]);	
-	return Gain;
+	// 				+ PedParsEr[1] * SpePars[2] / (SpePars[1] - pars[1]) / (SpeParsEr[1] - pars[1]);
+	double out[4] = {Gain, GainEr, SpePars[1], pars[1]};
+	cout << Gain << "\t" << GainEr << "\t" << SpePars[1] << "\t" << pars[1] << endl;
+	return out;
 }
