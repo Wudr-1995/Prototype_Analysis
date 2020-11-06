@@ -42,6 +42,7 @@ TH1F * Spec_3inch;
 TH1F * Spec_8inch;
 TH1F * Spec_20inch;
 TH1F * temp_w[112];
+TH1F * Baseline[112];
 double IntegralMap[BUFFER_LENGTH];
 
 TH1F * Inte = new TH1F("IntegralMap", "IntegralMap", 988, 0, 988);
@@ -118,6 +119,9 @@ int TotalProcess(int argc, char **argv)
 			InputTree->GetEntry(i);
 			GetWaveform();
 			GetWaveformSum();
+			for (short k = 0; k < 100; k ++) {
+				Baseline[ChId - 256]->Fill(waveform->GetBinContent(k + 1));
+			}
 		}
 		GetPeakWindow();
 		//for (int i = 0; i < 112; i ++)
@@ -255,6 +259,7 @@ int TotalProcess(int argc, char **argv)
 		charge_spectrum[i]->Write();
 		PENum[i]->Write();
 		Amp[i]->Write();
+		Baseline[i]->Write();
 		//cout << PENum[i]->GetMean() << endl;
 		//out << PENum[i]->GetMean() << endl;
 	}
@@ -299,6 +304,8 @@ int Initialize()
 		Amp[i] = new TH1F(name, name, 10000, -5, 1000);
 		sprintf(name, "Temp Waveform %d", i + 256);
 		temp_w[i] = new TH1F(name, name, 988, 0, 988);
+		sprintf(name, "Baseline_Distribution", i + 256);
+		Baseline[i] = new TH1F(name, name, 100, -50, 50);
 	}
 	waveform = new TH1F("waveform", "waveform", 988, 0, 988);
 	PeSpectrum = new TH1F("PeSpectrum", "PeSpectrum", 5000, 0, 5000);
