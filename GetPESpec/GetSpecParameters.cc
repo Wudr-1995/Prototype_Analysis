@@ -96,3 +96,4 @@ double* CalibGain(TH1F* InSpec) {
 	cout << Gain << "\t" << GainEr << "\t" << SpePars[1] << "\t" << pars[1] << endl;
 	return out;
 }
+
