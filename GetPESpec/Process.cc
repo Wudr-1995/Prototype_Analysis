@@ -304,7 +304,7 @@ int Initialize()
 		Amp[i] = new TH1F(name, name, 10000, -5, 1000);
 		sprintf(name, "Temp Waveform %d", i + 256);
 		temp_w[i] = new TH1F(name, name, 988, 0, 988);
-		sprintf(name, "Baseline_Distribution", i + 256);
+		sprintf(name, "Baseline_Distribution_%d", i + 256);
 		Baseline[i] = new TH1F(name, name, 100, -50, 50);
 	}
 	waveform = new TH1F("waveform", "waveform", 988, 0, 988);
